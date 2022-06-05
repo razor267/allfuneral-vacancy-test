@@ -2,15 +2,17 @@ import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react'
 
 export const Api = createApi({
     reducerPath: 'api',
-    baseQuery: fetchBaseQuery({baseUrl: 'http://135.181.35.61:2112/', mode: 'cors'}),
+    baseQuery: fetchBaseQuery({baseUrl: 'http://135.181.35.61:2112/'}),
     endpoints: (build) => ({
-        login: build.query({
+        auth: build.query({
             query: user => `auth?user=${user}`,
             transformResponse: (apiResponse, meta) => {
-                return { token: meta?.response?.headers.get('Authorization') }
+                const token = meta?.response?.headers.get('Authorization')?.substring(7)
+                if (token) localStorage.setItem('token', token)
+                return token
             }
         }),
     })
 })
 
-export const {useLoginQuery} = Api
+export const {useAuthQuery} = Api
