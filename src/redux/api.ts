@@ -8,7 +8,7 @@ export const Api = createApi({
             query: user => `auth?user=${user}`,
             transformResponse: (apiResponse, meta) => {
                 const token = meta?.response?.headers.get('Authorization')?.substring(7)
-                if (token) localStorage.setItem('token', token)
+                // if (token) localStorage.setItem('token', token)
                 return token
             }
         }),
